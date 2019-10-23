@@ -8,9 +8,15 @@
     <div class="messageArea">○○さん {{ message }}</div>
     <div class="calculator">
       <input v-model.number="numA" type="text" placeholder="数字" />
-      ＋
+      <select v-model="numTool">
+        <option disabled value="">選んでください</option>
+        <option>+</option>
+        <option>-</option>
+        <option>×</option>
+        <option>÷</option>
+      </select>
       <input v-model.number="numB" type="text" placeholder="数字" />
-      <button @click="onAnswerClick(numA, numB)">Answer</button>
+      <button @click="onAnswerClick(numA, numB, numTool)">Answer</button>
       <br />
       A. {{ calculatorAnswer }}
     </div>
@@ -60,12 +66,22 @@ export default class extends Vue {
     alert(x + 'と' + y)
   }
 
-  public onAnswerClick(numA: number, numB: number) {
-    this.calculatorAnswer = numA + numB
-    // 数値の入力チェックどうしたら良いかな
-    // SelectBoxで四則演算選ばせたい
-    // 少数とかの概念あるのかな
-    // 負の数とかできるのかな
+  public onAnswerClick(numA: number, numB: number, numTool: String) {
+    alert(numTool)
+    switch (numTool) {
+      case '+':
+        this.calculatorAnswer = numA + numB
+        break
+      case '-':
+        this.calculatorAnswer = numA - numB
+        break
+      case '×':
+        this.calculatorAnswer = numA * numB
+        break
+      case '÷':
+        this.calculatorAnswer = numA / numB
+        break
+    }
   }
 }
 </script>
