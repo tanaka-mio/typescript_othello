@@ -20,6 +20,11 @@
       <br />
       A. {{ calculatorAnswer }}
     </div>
+    <div class="memolist">
+      <input v-model="memo" type="text" placeholder="メモしたいこと" />
+      <button @click="onMemoClick(memo)">Answer</button>
+      {{ memo }}
+    </div>
     <div class="board">
       <template v-for="y in board.length">
         <div
@@ -58,14 +63,22 @@ export default class extends Vue {
   // オセロ用表示メッセージ
   message = 'あなたの番です'
 
+  // メモ機能用メッセージ
+  memo: String = ''
+
   // 計算機用メッセージ
-  // Q1：関数内で宣言した場合は、Return
   calculatorAnswer: number = 0
 
   public onClick(x: number, y: number) {
     alert(x + 'と' + y)
   }
 
+  // メモ機能用クリックイベント
+  public onMemoClick(memo: String) {
+    this.memo = memo
+  }
+
+  // 計算機能用クリックイベント
   public onAnswerClick(numA: number, numB: number, numTool: String) {
     alert(numTool)
     switch (numTool) {
@@ -97,9 +110,16 @@ export default class extends Vue {
 
 .calculator {
   margin: 0 auto;
+  padding: 10px;
   width: 640px;
-  height: 100px;
   background: lightblue;
+}
+
+.memolist {
+  margin: 0 auto;
+  padding: 10px;
+  width: 640px;
+  background: lightgoldenrodyellow;
 }
 
 .board {
