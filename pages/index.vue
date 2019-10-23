@@ -1,11 +1,13 @@
 <template>
   <div>
+    <!-- ユーザー情報エリア -->
     <div class="menu">
       <input type="text" placeholder="あなたの名前" />
       <button>GAME START!!!</button>
       <button>STOP!!!</button>
     </div>
     <div class="messageArea">○○さん {{ message }}</div>
+    <!-- 計算機エリア -->
     <div class="calculator">
       <input v-model.number="numA" type="text" placeholder="数字" />
       <select v-model="numTool">
@@ -20,11 +22,22 @@
       <br />
       A. {{ calculatorAnswer }}
     </div>
-    <div class="memolist">
+    <!-- メモ機能エリア -->
+    <div class="memoArea">
       <input v-model="memo" type="text" placeholder="メモしたいこと" />
-      <button @click="onMemoClick(memo)">Answer</button>
-      {{ memo }}
+      <button @click="onMemoClick(memo)">Regist!!</button>
+      <div v-for="memo in memoList" :key="memo.id">
+        <input
+          v-model="memo.done"
+          type="checkbox"
+          @click="onDoneClick(memo.id)"
+        />
+        <label :class="[memo.done ? 'done' : '']">
+          {{ memo.value }}
+        </label>
+      </div>
     </div>
+    <!-- オセロエリア -->
     <div class="board">
       <template v-for="y in board.length">
         <div
@@ -46,6 +59,12 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 
+interface Memo {
+  id: Number
+  value: String
+  done: Boolean
+}
+
 @Component
 export default class extends Vue {
   // オセロ配列
@@ -60,22 +79,36 @@ export default class extends Vue {
     [0, 0, 0, 0, 0, 0, 0, 0]
   ]
 
-  // オセロ用表示メッセージ
+  // オセロ用
   message = 'あなたの番です'
 
-  // メモ機能用メッセージ
-  memo: String = ''
+  // メモ機能用
+  count = 0
+  memoList: Array<Memo> = []
+  memo = ''
 
-  // 計算機用メッセージ
-  calculatorAnswer: number = 0
+  // 計算機用
+  calculatorAnswer = 0
+  numA = 0
+  numB = 0
+  numTool = ''
 
+  // オセロ石用クリックイベント
   public onClick(x: number, y: number) {
     alert(x + 'と' + y)
   }
 
   // メモ機能用クリックイベント
-  public onMemoClick(memo: String) {
-    this.memo = memo
+  public onMemoClick(memo: String, memoDone: Boolean) {
+    const registMemo = {
+      id: this.count++,
+      value: memo,
+      done: memoDone
+    }
+    this.memoList.push(registMemo)
+  }
+  public onDoneClick(id: number) {
+    this.memoList[id].done = true
   }
 
   // 計算機能用クリックイベント
@@ -115,11 +148,15 @@ export default class extends Vue {
   background: lightblue;
 }
 
-.memolist {
+.memoArea {
   margin: 0 auto;
   padding: 10px;
   width: 640px;
   background: lightgoldenrodyellow;
+}
+
+.done {
+  text-decoration: line-through;
 }
 
 .board {
