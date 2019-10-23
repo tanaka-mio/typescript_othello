@@ -1,11 +1,19 @@
 <template>
   <div>
     <div class="menu">
-      <input type="text" value="あなたの名前" />
+      <input type="text" placeholder="あなたの名前" />
       <button>GAME START!!!</button>
       <button>STOP!!!</button>
     </div>
     <div class="messageArea">○○さん {{ message }}</div>
+    <div class="calculator">
+      <input v-model.number="numA" type="text" placeholder="数字" />
+      ＋
+      <input v-model.number="numB" type="text" placeholder="数字" />
+      <button @click="onAnswerClick(numA, numB)">Answer</button>
+      <br />
+      A. {{ calculatorAnswer }}
+    </div>
     <div class="board">
       <template v-for="y in board.length">
         <div
@@ -25,10 +33,12 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'nuxt-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
 
+@Component
 export default class extends Vue {
-  board: number[][] = [
+  // オセロ配列
+  board = [
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -39,10 +49,23 @@ export default class extends Vue {
     [0, 0, 0, 0, 0, 0, 0, 0]
   ]
 
-  message: string = 'あなたの番です'
+  // オセロ用表示メッセージ
+  message = 'あなたの番です'
+
+  // 計算機用メッセージ
+  // Q1：関数内で宣言した場合は、Return
+  calculatorAnswer: number = 0
 
   public onClick(x: number, y: number) {
     alert(x + 'と' + y)
+  }
+
+  public onAnswerClick(numA: number, numB: number) {
+    this.calculatorAnswer = numA + numB
+    // 数値の入力チェックどうしたら良いかな
+    // SelectBoxで四則演算選ばせたい
+    // 少数とかの概念あるのかな
+    // 負の数とかできるのかな
   }
 }
 </script>
@@ -54,6 +77,13 @@ export default class extends Vue {
 
 .messageArea {
   margin: 0 5%;
+}
+
+.calculator {
+  margin: 0 auto;
+  width: 640px;
+  height: 100px;
+  background: lightblue;
 }
 
 .board {
