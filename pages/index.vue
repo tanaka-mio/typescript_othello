@@ -102,11 +102,11 @@ export default class extends Vue {
   numB = 0
   selectedOperatorId = 0
   operators: Operator[] = [
-    { id: 1, label: '+', culc: (numA, numB) => numA + numB },
-    { id: 2, label: '-', culc: (numA, numB) => numA - numB },
-    { id: 3, label: 'x', culc: (numA, numB) => numA * numB },
-    { id: 4, label: '÷', culc: (numA, numB) => numA / numB }
-  ]
+    { label: '+', culc: (numA: number, numB: number) => numA + numB },
+    { label: '-', culc: (numA: number, numB: number) => numA - numB },
+    { label: 'x', culc: (numA: number, numB: number) => numA * numB },
+    { label: '÷', culc: (numA: number, numB: number) => numA / numB }
+  ].map((operator, id) => ({ ...operator, id }))
 
   // オセロ石用クリックイベント
   public onClick(x: number, y: number) {
