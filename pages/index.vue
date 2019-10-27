@@ -10,15 +10,18 @@
     <!-- 計算機エリア -->
     <div class="calculator">
       <input v-model.number="numA" type="text" placeholder="数字" />
-      <select v-model="numTool">
-        <option disabled value="">選んでください</option>
-        <option>+</option>
-        <option>-</option>
-        <option>×</option>
-        <option>÷</option>
+      <select v-model="selectedOperatorId">
+        <option
+          v-for="operator in operators"
+          :key="operator.id"
+          :value="operator.id"
+          >{{ operator.label }}</option
+        >
       </select>
       <input v-model.number="numB" type="text" placeholder="数字" />
-      <button @click="onAnswerClick(numA, numB, numTool)">Answer</button>
+      <button @click="onAnswerClick(numA, numB, selectedOperatorId)">
+        Answer
+      </button>
       <br />
       A. {{ calculatorAnswer }}
     </div>
@@ -65,6 +68,12 @@ interface Memo {
   done: Boolean
 }
 
+interface Operator {
+  id: number
+  label: string
+  culc: (numA: number, numB: number) => number
+}
+
 @Component
 export default class extends Vue {
   // オセロ配列
@@ -84,14 +93,21 @@ export default class extends Vue {
 
   // メモ機能用
   count = 0
-  memoList: Array<Memo> = []
+  memoList: Memo[] = []
   memo = ''
 
   // 計算機用
   calculatorAnswer = 0
   numA = 0
   numB = 0
-  numTool = ''
+  something0 = 0
+  selectedOperatorId = 0
+  operators: Operator[] = [
+    { id: 1, label: '+', culc: (numA, numB) => numA + numB },
+    { id: 2, label: '-', culc: (numA, numB) => numA - numB },
+    { id: 3, label: 'x', culc: (numA, numB) => numA * numB },
+    { id: 4, label: '÷', culc: (numA, numB) => numA / numB }
+  ]
 
   // オセロ石用クリックイベント
   public onClick(x: number, y: number) {
@@ -112,9 +128,15 @@ export default class extends Vue {
   }
 
   // 計算機能用クリックイベント
-  public onAnswerClick(numA: number, numB: number, numTool: String) {
-    alert(numTool)
-    switch (numTool) {
+  public onAnswerClick(numA: number, numB: number) {
+    alert(this.selectedOperatorId + '&' + numA + '&' + numB)
+    this.calculatorAnswer = this.operators
+      .filter((operator) => operator.id === this.selectedOperatorId)[0]
+      .culc(numA, numB)
+    /*
+   
+    
+    switch (selectedOperatorId) {
       case '+':
         this.calculatorAnswer = numA + numB
         break
@@ -128,6 +150,7 @@ export default class extends Vue {
         this.calculatorAnswer = numA / numB
         break
     }
+    */
   }
 }
 </script>
