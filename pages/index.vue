@@ -19,7 +19,7 @@
         >
       </select>
       <input v-model.number="numB" type="text" placeholder="数字" />
-      <button @click="onAnswerClick(numA, numB, selectedOperatorId)">
+      <button @click="onAnswerClick(numA, numB)">
         Answer
       </button>
       <br />
@@ -100,7 +100,6 @@ export default class extends Vue {
   calculatorAnswer = 0
   numA = 0
   numB = 0
-  something0 = 0
   selectedOperatorId = 0
   operators: Operator[] = [
     { id: 1, label: '+', culc: (numA, numB) => numA + numB },
@@ -129,28 +128,9 @@ export default class extends Vue {
 
   // 計算機能用クリックイベント
   public onAnswerClick(numA: number, numB: number) {
-    alert(this.selectedOperatorId + '&' + numA + '&' + numB)
     this.calculatorAnswer = this.operators
       .filter((operator) => operator.id === this.selectedOperatorId)[0]
       .culc(numA, numB)
-    /*
-   
-    
-    switch (selectedOperatorId) {
-      case '+':
-        this.calculatorAnswer = numA + numB
-        break
-      case '-':
-        this.calculatorAnswer = numA - numB
-        break
-      case '×':
-        this.calculatorAnswer = numA * numB
-        break
-      case '÷':
-        this.calculatorAnswer = numA / numB
-        break
-    }
-    */
   }
 }
 </script>
