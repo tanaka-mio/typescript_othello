@@ -109,8 +109,10 @@ export default class extends Vue {
   ].map((operator, id) => ({ ...operator, id }))
 
   // オセロ石用クリックイベント
-  public onClick(x: number, y: number) {
-    alert(x + 'と' + y)
+  async onClick(x: number, y: number) {
+    console.log(x + 'and' + y)
+    const users = await this.$axios.$get('/othello/tanaka')
+    console.log(users)
   }
 
   // メモ機能用クリックイベント
