@@ -110,8 +110,8 @@ export default class extends Vue {
 
   // オセロ石用クリックイベント
   async onClick(x: number, y: number) {
-    console.log(x + 'and' + y)
-    await this.$vxm.othello.doGetMessage()
+    console.log(`${x}+${y}`)
+    await this.$vxm.othello.getMessage()
   }
 
   // メモ機能用クリックイベント

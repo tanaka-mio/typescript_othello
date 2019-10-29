@@ -15,17 +15,13 @@ const VuexModule = createModule({
 export class OthelloStore extends VuexModule {
   message = 'JavaScript'
 
-  @mutation changeMessage({ message }: { message: string }) {
+  @mutation setMessage(message: string) {
     this.message = message
   }
 
-  @action getMessage() {
-    return $nuxt.$api.othello.tanaka.$get()
-  }
-
-  @action async doGetMessage() {
-    const message = await this.getMessage()
-    this.changeMessage({ message })
+  @action async getMessage() {
+    const message = await $nuxt.$api.othello.tanaka.$get()
+    this.setMessage(message)
   }
 }
 
