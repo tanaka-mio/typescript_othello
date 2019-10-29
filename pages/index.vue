@@ -6,7 +6,7 @@
       <button>GAME START!!!</button>
       <button>STOP!!!</button>
     </div>
-    <div class="messageArea">○○さん {{ message }}</div>
+    <div class="messageArea">○○さん {{ $vxm.othello.message }}</div>
     <!-- 計算機エリア -->
     <div class="calculator">
       <input v-model.number="numA" type="text" placeholder="数字" />
@@ -109,8 +109,9 @@ export default class extends Vue {
   ].map((operator, id) => ({ ...operator, id }))
 
   // オセロ石用クリックイベント
-  public onClick(x: number, y: number) {
-    alert(x + 'と' + y)
+  async onClick(x: number, y: number) {
+    console.log(`${x}+${y}`)
+    await this.$vxm.othello.getMessage()
   }
 
   // メモ機能用クリックイベント
