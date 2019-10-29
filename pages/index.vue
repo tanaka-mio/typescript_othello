@@ -61,6 +61,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+// 計算機能・メモ機能・オセロ配列を移管する
 
 interface Memo {
   id: Number
