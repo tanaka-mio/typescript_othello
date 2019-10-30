@@ -2,7 +2,6 @@ import Vuex from 'vuex'
 import {
   createModule,
   mutation,
-  action,
   extractVuexModule,
   createProxy
 } from 'vuex-class-component'
@@ -30,19 +29,15 @@ export class CalculatorStore extends VuexModule {
     { label: '÷', culc: (numA: number, numB: number) => numA / numB }
   ].map((operator, id) => ({ ...operator, id }))
 
-  @mutation setAnswer(calculatorAnswer: number) {
-    this.calculatorAnswer = calculatorAnswer
-  }
-
-  @action getAnswer(payload: any) {
-    const numA = payload[0]
-    const numB = payload[1]
-    const operatorId = payload[2]
+  @mutation setAnswer(payload: {
+    numA: number
+    numB: number
+    operatorId: number
+  }) {
     const calculatorAnswer = this.operators
-      .filter((operator) => operator.id === operatorId)[0]
-      .culc(numA, numB)
-    this.setAnswer(calculatorAnswer)
-    return payload
+      .filter((operator) => operator.id === payload.operatorId)[0]
+      .culc(payload.numA, payload.numB)
+    this.calculatorAnswer = calculatorAnswer
   }
 }
 

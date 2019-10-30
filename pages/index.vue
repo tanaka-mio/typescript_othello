@@ -10,7 +10,7 @@
     <!-- 計算機エリア -->
     <div class="calculator">
       <input v-model.number="numA" type="text" placeholder="数字" />
-      <select v-model="selectedOperatorId">
+      <select v-model="operatorId">
         <option
           v-for="operator in $vxm.calculator.operators"
           :key="operator.id"
@@ -94,7 +94,7 @@ export default class extends Vue {
   // 計算機用
   numA = 0
   numB = 0
-  selectedOperatorId = 0
+  operatorId = 0
 
   // オセロ石用クリックイベント
   async onClick(x: number, y: number) {
@@ -117,8 +117,8 @@ export default class extends Vue {
 
   // 計算機能用クリックイベント
   public onAnswerClick(numA: number, numB: number) {
-    const payload = [numA, numB, this.selectedOperatorId]
-    this.$vxm.calculator.getAnswer(payload)
+    const payload = { numA, numB, operatorId: this.operatorId }
+    this.$vxm.calculator.setAnswer(payload)
   }
 }
 </script>
