@@ -12,7 +12,7 @@
       <input v-model.number="numA" type="text" placeholder="数字" />
       <select v-model="selectedOperatorId">
         <option
-          v-for="operator in operators"
+          v-for="operator in $vxm.calculator.operators"
           :key="operator.id"
           :value="operator.id"
           >{{ operator.label }}</option
@@ -23,7 +23,7 @@
         Answer
       </button>
       <br />
-      A. {{ calculatorAnswer }}
+      A. {{ $vxm.calculator.calculatorAnswer }}
     </div>
     <!-- メモ機能エリア -->
     <div class="memoArea">
@@ -69,12 +69,6 @@ interface Memo {
   done: Boolean
 }
 
-interface Operator {
-  id: number
-  label: string
-  culc: (numA: number, numB: number) => number
-}
-
 @Component
 export default class extends Vue {
   // オセロ配列
@@ -98,16 +92,9 @@ export default class extends Vue {
   memo = ''
 
   // 計算機用
-  calculatorAnswer = 0
   numA = 0
   numB = 0
   selectedOperatorId = 0
-  operators: Operator[] = [
-    { label: '+', culc: (numA: number, numB: number) => numA + numB },
-    { label: '-', culc: (numA: number, numB: number) => numA - numB },
-    { label: 'x', culc: (numA: number, numB: number) => numA * numB },
-    { label: '÷', culc: (numA: number, numB: number) => numA / numB }
-  ].map((operator, id) => ({ ...operator, id }))
 
   // オセロ石用クリックイベント
   async onClick(x: number, y: number) {
@@ -130,9 +117,8 @@ export default class extends Vue {
 
   // 計算機能用クリックイベント
   public onAnswerClick(numA: number, numB: number) {
-    this.calculatorAnswer = this.operators
-      .filter((operator) => operator.id === this.selectedOperatorId)[0]
-      .culc(numA, numB)
+    const payload = [numA, numB, this.selectedOperatorId]
+    this.$vxm.calculator.getAnswer(payload)
   }
 }
 </script>
