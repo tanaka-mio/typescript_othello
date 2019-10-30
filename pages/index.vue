@@ -29,7 +29,7 @@
     <div class="memoArea">
       <input v-model="memo" type="text" placeholder="メモしたいこと" />
       <button @click="onMemoClick(memo)">Regist!!</button>
-      <div v-for="memo in memoList" :key="memo.id">
+      <div v-for="memo in $vxm.memo.memoList" :key="memo.id">
         <input
           v-model="memo.done"
           type="checkbox"
@@ -63,12 +63,6 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 // 計算機能・メモ機能・オセロ配列を移管する
 
-interface Memo {
-  id: Number
-  value: String
-  done: Boolean
-}
-
 @Component
 export default class extends Vue {
   // オセロ配列
@@ -87,8 +81,6 @@ export default class extends Vue {
   message = 'あなたの番です'
 
   // メモ機能用
-  count = 0
-  memoList: Memo[] = []
   memo = ''
 
   // 計算機用
@@ -103,22 +95,16 @@ export default class extends Vue {
   }
 
   // メモ機能用クリックイベント
-  public onMemoClick(memo: String, memoDone: Boolean) {
-    const registMemo = {
-      id: this.count++,
-      value: memo,
-      done: memoDone
-    }
-    this.memoList.push(registMemo)
+  public onMemoClick(memo: string) {
+    this.$vxm.memo.setMemo({ memo, memoDone: false })
   }
   public onDoneClick(id: number) {
-    this.memoList[id].done = true
+    this.$vxm.memo.updateMemo(id)
   }
 
   // 計算機能用クリックイベント
   public onAnswerClick(numA: number, numB: number) {
-    const payload = { numA, numB, operatorId: this.operatorId }
-    this.$vxm.calculator.setAnswer(payload)
+    this.$vxm.calculator.setAnswer({ numA, numB, operatorId: this.operatorId })
   }
 }
 </script>
