@@ -33,7 +33,7 @@
         <input
           v-model="memo.done"
           type="checkbox"
-          @click="onDoneClick(memo.id)"
+          @click="onDoneClick(memo.id - 1)"
         />
         <label :class="[memo.done ? 'done' : '']">
           {{ memo.value }}
@@ -96,6 +96,7 @@ export default class extends Vue {
 
   // メモ機能用クリックイベント
   public onMemoClick(memo: string) {
+    this.$vxm.memo.setCount()
     this.$vxm.memo.setMemo({ memo, memoDone: false })
   }
   public onDoneClick(id: number) {
