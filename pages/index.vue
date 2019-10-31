@@ -42,16 +42,19 @@
     </div>
     <!-- オセロエリア -->
     <div class="board">
-      <template v-for="y in board.length">
+      <template v-for="y in $vxm.othello.board.length">
         <div
-          v-for="x in board[y - 1].length"
+          v-for="x in $vxm.othello.board[y - 1].length"
           :key="`${x}-${y}`"
           class="cell"
-          @click="onClick(x, y)"
+          @click="onClick(x - 1, y - 1)"
         >
           <div
-            v-if="board[y - 1][x - 1] !== 0"
-            :class="['ball', board[y - 1][x - 1] === 1 ? 'white' : 'black']"
+            v-if="$vxm.othello.board[y - 1][x - 1] !== 0"
+            :class="[
+              'ball',
+              $vxm.othello.board[y - 1][x - 1] === 1 ? 'white' : 'black'
+            ]"
           />
         </div>
       </template>
@@ -65,21 +68,6 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component
 export default class extends Vue {
-  // オセロ配列
-  board = [
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, -1, 0, 0, 0],
-    [0, 0, 0, -1, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0]
-  ]
-
-  // オセロ用
-  message = 'あなたの番です'
-
   // メモ機能用
   memo = ''
 
@@ -90,7 +78,7 @@ export default class extends Vue {
 
   // オセロ石用クリックイベント
   async onClick(x: number, y: number) {
-    console.log(`${x}+${y}`)
+    this.$vxm.othello.setOthello({ x, y })
     await this.$vxm.othello.getMessage()
   }
 
