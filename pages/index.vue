@@ -10,9 +10,9 @@
     <!-- 計算機エリア -->
     <div class="calculator">
       <input v-model.number="numA" type="text" placeholder="数字" />
-      <select v-model="selectedOperatorId">
+      <select v-model="operatorId">
         <option
-          v-for="operator in operators"
+          v-for="operator in $vxm.calculator.operators"
           :key="operator.id"
           :value="operator.id"
           >{{ operator.label }}</option
@@ -23,17 +23,17 @@
         Answer
       </button>
       <br />
-      A. {{ calculatorAnswer }}
+      A. {{ $vxm.calculator.calculatorAnswer }}
     </div>
     <!-- メモ機能エリア -->
     <div class="memoArea">
       <input v-model="memo" type="text" placeholder="メモしたいこと" />
-      <button @click="onMemoClick(memo)">Regist!!</button>
-      <div v-for="memo in memoList" :key="memo.id">
+      <button @click="onMemoClick(memo)">Register!!</button>
+      <div v-for="memo in $vxm.memo.memoList" :key="memo.id">
         <input
           v-model="memo.done"
           type="checkbox"
-          @click="onDoneClick(memo.id)"
+          @click="onDoneClick(memo.id - 1)"
         />
         <label :class="[memo.done ? 'done' : '']">
           {{ memo.value }}
@@ -61,18 +61,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-
-interface Memo {
-  id: Number
-  value: String
-  done: Boolean
-}
-
-interface Operator {
-  id: number
-  label: string
-  culc: (numA: number, numB: number) => number
-}
+// 計算機能・メモ機能・オセロ配列を移管する
 
 @Component
 export default class extends Vue {
@@ -92,21 +81,12 @@ export default class extends Vue {
   message = 'あなたの番です'
 
   // メモ機能用
-  count = 0
-  memoList: Memo[] = []
   memo = ''
 
   // 計算機用
-  calculatorAnswer = 0
   numA = 0
   numB = 0
-  selectedOperatorId = 0
-  operators: Operator[] = [
-    { label: '+', culc: (numA: number, numB: number) => numA + numB },
-    { label: '-', culc: (numA: number, numB: number) => numA - numB },
-    { label: 'x', culc: (numA: number, numB: number) => numA * numB },
-    { label: '÷', culc: (numA: number, numB: number) => numA / numB }
-  ].map((operator, id) => ({ ...operator, id }))
+  operatorId = 0
 
   // オセロ石用クリックイベント
   async onClick(x: number, y: number) {
@@ -115,23 +95,17 @@ export default class extends Vue {
   }
 
   // メモ機能用クリックイベント
-  public onMemoClick(memo: String, memoDone: Boolean) {
-    const registMemo = {
-      id: this.count++,
-      value: memo,
-      done: memoDone
-    }
-    this.memoList.push(registMemo)
+  public onMemoClick(memo: string) {
+    this.$vxm.memo.setCount()
+    this.$vxm.memo.setMemo({ memo, memoDone: false })
   }
   public onDoneClick(id: number) {
-    this.memoList[id].done = true
+    this.$vxm.memo.updateMemo(id)
   }
 
   // 計算機能用クリックイベント
   public onAnswerClick(numA: number, numB: number) {
-    this.calculatorAnswer = this.operators
-      .filter((operator) => operator.id === this.selectedOperatorId)[0]
-      .culc(numA, numB)
+    this.$vxm.calculator.setAnswer({ numA, numB, operatorId: this.operatorId })
   }
 }
 </script>

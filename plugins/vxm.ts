@@ -1,10 +1,14 @@
 import { Plugin } from '@nuxt/types'
 import UsersProxy from '~/store/users'
 import OthelloProxy from '~/store/othello'
+import CalculatorProxy from '~/store/calculator'
+import MemoProxy from '~/store/memo'
 
 const vxm = {
   users: UsersProxy,
-  othello: OthelloProxy
+  othello: OthelloProxy,
+  calculator: CalculatorProxy,
+  memo: MemoProxy
 }
 
 declare module 'vue/types/vue' {
