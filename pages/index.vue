@@ -1,157 +1,25 @@
 <template>
   <div>
     <!-- ユーザー情報エリア -->
-    <div class="menu">
-      <input type="text" placeholder="あなたの名前" />
-      <button>GAME START!!!</button>
-      <button>STOP!!!</button>
-    </div>
-    <div class="messageArea">○○さん {{ $vxm.othello.message }}</div>
+    <User />
     <!-- 計算機エリア -->
-    <div class="calculator">
-      <input v-model.number="numA" type="text" placeholder="数字" />
-      <select v-model="operatorId">
-        <option
-          v-for="operator in $vxm.calculator.operators"
-          :key="operator.id"
-          :value="operator.id"
-          >{{ operator.label }}</option
-        >
-      </select>
-      <input v-model.number="numB" type="text" placeholder="数字" />
-      <button @click="onAnswerClick(numA, numB)">
-        Answer
-      </button>
-      <br />
-      A. {{ $vxm.calculator.calculatorAnswer }}
-    </div>
+    <Calculator />
     <!-- メモ機能エリア -->
-    <div class="memoArea">
-      <input v-model="memo" type="text" placeholder="メモしたいこと" />
-      <button @click="onMemoClick(memo)">Register!!</button>
-      <div v-for="memo in $vxm.memo.memoList" :key="memo.id">
-        <input
-          v-model="memo.done"
-          type="checkbox"
-          @click="onDoneClick(memo.id - 1)"
-        />
-        <label :class="[memo.done ? 'done' : '']">
-          {{ memo.value }}
-        </label>
-      </div>
-    </div>
+    <Memo />
     <!-- オセロエリア -->
-    <div class="board">
-      <template v-for="y in $vxm.othello.board.length">
-        <div
-          v-for="x in $vxm.othello.board[y - 1].length"
-          :key="`${x}-${y}`"
-          class="cell"
-          @click="onClick(x - 1, y - 1)"
-        >
-          <div
-            v-if="$vxm.othello.board[y - 1][x - 1] !== 0"
-            :class="[
-              'ball',
-              $vxm.othello.board[y - 1][x - 1] === 1 ? 'white' : 'black'
-            ]"
-          />
-        </div>
-      </template>
-    </div>
+    <Othello />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-// 計算機能・メモ機能・オセロ配列を移管する
+import Memo from '~/components/organisms/Memo.vue'
+import Calculator from '~/components/organisms/Calculator.vue'
+import Othello from '~/components/organisms/Othello.vue'
+import User from '~/components/organisms/User.vue'
 
-@Component
-export default class extends Vue {
-  // メモ機能用
-  memo = ''
-
-  // 計算機用
-  numA = 0
-  numB = 0
-  operatorId = 0
-
-  // オセロ石用クリックイベント
-  async onClick(x: number, y: number) {
-    this.$vxm.othello.setOthello({ x, y })
-    await this.$vxm.othello.getMessage()
-  }
-
-  // メモ機能用クリックイベント
-  public onMemoClick(memo: string) {
-    this.$vxm.memo.setCount()
-    this.$vxm.memo.setMemo({ memo, memoDone: false })
-  }
-  public onDoneClick(id: number) {
-    this.$vxm.memo.updateMemo(id)
-  }
-
-  // 計算機能用クリックイベント
-  public onAnswerClick(numA: number, numB: number) {
-    this.$vxm.calculator.setAnswer({ numA, numB, operatorId: this.operatorId })
-  }
-}
+@Component({
+  components: { User, Calculator, Memo, Othello }
+})
+export default class extends Vue {}
 </script>
-
-<style scoped>
-.menu {
-  margin: 5%;
-}
-
-.messageArea {
-  margin: 0 5%;
-}
-
-.calculator {
-  margin: 0 auto;
-  padding: 10px;
-  width: 640px;
-  background: lightblue;
-}
-
-.memoArea {
-  margin: 0 auto;
-  padding: 10px;
-  width: 640px;
-  background: lightgoldenrodyellow;
-}
-
-.done {
-  text-decoration: line-through;
-}
-
-.board {
-  margin: 0 auto;
-  width: 640px;
-  height: 640px;
-  background: #060;
-}
-
-.cell {
-  width: 12.5%;
-  height: 12.5%;
-  border: black solid 1px;
-  float: left;
-  list-style: none;
-}
-
-.ball {
-  width: 80%;
-  height: 80%;
-  border-radius: 50%;
-  margin: 10%;
-}
-
-.black {
-  background: black;
-}
-
-.white {
-  background: white;
-}
-</style>
