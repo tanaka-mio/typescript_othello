@@ -28,7 +28,7 @@
     <!-- メモ機能エリア -->
     <div class="memoArea">
       <input v-model="memo" type="text" placeholder="メモしたいこと" />
-      <button @click="onMemoClick(memo)">Regist!!</button>
+      <button @click="onMemoClick(memo)">Register!!</button>
       <div v-for="memo in $vxm.memo.memoList" :key="memo.id">
         <input
           v-model="memo.done"

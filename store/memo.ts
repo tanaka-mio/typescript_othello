@@ -25,12 +25,12 @@ export class MemoStore extends VuexModule {
     this.count += 1
   }
   @mutation setMemo(payload: { memo: string; memoDone: boolean }) {
-    const registerMemo = {
+    const registrationMemo = {
       id: this.count,
       value: payload.memo,
       done: payload.memoDone
     }
-    this.memoList.push(registerMemo)
+    this.memoList = [...this.memoList, registrationMemo]
   }
   @mutation updateMemo(id: number) {
     this.memoList[id].done = true
