@@ -27,6 +27,7 @@ export default class CalculationInput extends Vue {
   answer!: {
     type: Number
   }
+  @Prop()
   operators!: {
     type: Object
   }
@@ -38,7 +39,7 @@ export default class CalculationInput extends Vue {
 
   // 計算機能用クリックイベント
   public onChildClick(numA: number, numB: number) {
-    this.$emit('calculator', numA, numB, 1)
+    this.$emit('calculator', numA, numB, this.operatorId)
   }
 }
 </script>
