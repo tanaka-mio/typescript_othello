@@ -22,7 +22,7 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
 @Component
-export default class Calculation extends Vue {
+export default class CalculationInput extends Vue {
   @Prop()
   answer!: {
     type: Number

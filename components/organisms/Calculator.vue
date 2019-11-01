@@ -1,5 +1,5 @@
 <template>
-  <Calculation
+  <CalculationInput
     :answer="this.$vxm.calculator.calculatorAnswer"
     :operators="this.$vxm.calculator.operators"
     @calculator="onAnswerClick"
@@ -8,10 +8,10 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import Calculation from '~/components/molecules/Calculation.vue'
+import CalculationInput from '~/components/molecules/CalculationInput.vue'
 
 @Component({
-  components: { Calculation }
+  components: { CalculationInput }
 })
 export default class Calculator extends Vue {
   // 計算機能用クリックイベント
