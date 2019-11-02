@@ -10,7 +10,7 @@
       >
     </select>
     <input v-model.number="numB" type="text" placeholder="数字" />
-    <button @click="onChildClick(numA, numB)">
+    <button @click="callAnswer(numA, numB)">
       Answer
     </button>
     <br />
@@ -37,9 +37,9 @@ export default class CalculationInput extends Vue {
   numB = 0
   operatorId = 0
 
-  // 計算機能用クリックイベント
-  public onChildClick(numA: number, numB: number) {
-    this.$emit('calculator', numA, numB, this.operatorId)
+  // 答えを呼ぶイベント
+  public callAnswer(numA: number, numB: number) {
+    this.$emit('calculate', numA, numB, this.operatorId)
   }
 }
 </script>

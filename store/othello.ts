@@ -37,11 +37,7 @@ export class OthelloStore extends VuexModule {
   }
 
   @mutation setOthello(payload: { x: number; y: number }) {
-    // this.board = JSON.parse(JSON.stringify(this.board))
-    // this.board[payload.y][payload.x] = -1
-
-    // 不変性を意識してみた
-    const tempBoard = this.board.slice()
+    const tempBoard = this.board.map((row) => [...row])
     tempBoard[payload.y][payload.x] = -1
     this.board = tempBoard
   }
